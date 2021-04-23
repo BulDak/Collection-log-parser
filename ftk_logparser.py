@@ -32,12 +32,12 @@ class ftk_logparser(object):
         with open(log_path, encoding='utf-8') as fd:
             while True:
                 line=fd.readline()
-                if line=="":    break
-                if line.strip()=="":    continue
+                if line=='':    break
+                if line.strip()=='':    continue
 
                 if 'Created By AccessData' in line and 'FTK' in line and 'Imager' in line:
                     data[section]['collection_tool']='FTK Imager'
-                    data[section]['collection_tool_version']=line.strip().split(" ")[-1]
+                    data[section]['collection_tool_version']=line.strip().split(' ')[-1]
                     continue
 
                 if section in ('ATTENTION', 'Segment list', 'Image Verification Results'):
@@ -73,7 +73,7 @@ class ftk_logparser(object):
                                 hash_type=hash_type.strip()
                                 hash_value=hash_value.strip()
                                 is_verified=is_verified.strip()
-                                data[section][hash_type]="{}:{}".format(hash_value, is_verified)
+                                data[section][hash_type]='{}:{}'.format(hash_value, is_verified)
                             line=fd.readline()
                         section=None
                         continue
@@ -89,7 +89,7 @@ class ftk_logparser(object):
                 if line.strip()[0]=='[' and line.strip()[-1]==']':
                     section=line.strip()[1:-1]
                     continue
-                if line.strip()[-1]==":":
+                if line.strip()[-1]==':':
                     section=line.strip()[:-1]
                     continue
 
