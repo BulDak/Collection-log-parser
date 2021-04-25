@@ -103,4 +103,4 @@ if __name__=='__main__':
 
     log_path=args.input_path
     parser=logparser_ftkimager()
-    print (parser.get_ftklog(log_path))
+    print (parser.parse_ftklog(log_path))

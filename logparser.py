@@ -1,6 +1,3 @@
-from logparse_falcon import logparser_falcon
-
-
 import os
 from argparse import ArgumentParser
 
@@ -23,7 +20,7 @@ if __name__=='__main__':
     parser.add_argument('-i', '--input', dest='input_path')
     args=parser.parse_args()
 
-    log_path=args.inputA
+    log_path=args.input_path
     lp=logparser()
     if os.path.isfile(log_path):
         print (lp.parsing(log_path))
