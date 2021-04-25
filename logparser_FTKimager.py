@@ -7,8 +7,6 @@ class logparser_ftkimager(object):
     def __init__(self):
         self.path=None
 
-    def get_ftklog(self):   pass
-
     def is_ftklog(self, log_path :str):
         # Check the extension
         if os.path.splitext(log_path)[1].lower()!='.txt':  return False
@@ -20,7 +18,7 @@ class logparser_ftkimager(object):
                 return False
         return True
 
-    def get_ftklog(self, log_path :str):
+    def parse_ftklog(self, log_path :str):
         """
         :param path str: Path the log file
         :return dict: parsed data
@@ -97,11 +95,12 @@ class logparser_ftkimager(object):
 
         return data
 
-parser=ArgumentParser()
-parser.add_argument('-i', '--input', dest='input_path')
-args=parser.parse_args()
-
 if __name__=='__main__':
+    # Argument parsing
+    parser=ArgumentParser()
+    parser.add_argument('-i', '--input', dest='input_path')
+    args=parser.parse_args()
+
     log_path=args.input_path
     parser=logparser_ftkimager()
     print (parser.get_ftklog(log_path))
