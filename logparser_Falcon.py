@@ -136,5 +136,6 @@ if __name__=='__main__':
 
     log_path=args.input_path
     parser=logparser_falcon()
+    
     if args.standardization:    print (parser.parse_falconlog_standardization(log_path))
     else:    print (parser.parse_falconlog(log_path))

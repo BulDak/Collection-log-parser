@@ -1,5 +1,6 @@
 import os
 from argparse import ArgumentParser
+from re import A
 
 import logparser_Falcon
 import logparser_FTKimager
@@ -34,12 +35,21 @@ if __name__=='__main__':
     parser=ArgumentParser()
     parser.add_argument('-i', '--input', dest='input_path', help='Path to parsing')
     parser.add_argument('-s', '--standardization', action='store_true', help='Get the parsing data with standardization format')
-    args=parser.parse_args()
+    # args=parser.parse_args()
+    args=parser.parse_args(['-s', '-i', r'\\192.168.0.250\storage\Work\HH_Backup'])
 
     log_path=args.input_path
     lp=logparser()
 
     parsing_func=lp.parsing
     if args.standardization:    parsing_func=lp.parsing_standardization
+
     if os.path.isfile(log_path):    print (parsing_func(log_path))
-    elif os.path.isdir(log_path):   pass
+    elif os.path.isdir(log_path):
+        for parent_path, dirs, filenames in os.walk(log_path):
+            for filename in filenames:
+                try:
+                    filepath=os.path.join(parent_path, filename)
+                    res=parsing_func(filepath)
+                    if res: print (res)
+                except: pass

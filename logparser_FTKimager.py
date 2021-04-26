@@ -29,7 +29,7 @@ class logparser_ftkimager(object):
 
         data=defaultdict(dict)
         
-        section='input_information'
+        section='basic_information'
         with open(log_path, encoding='utf-8') as fd:
             while True:
                 line=fd.readline()
@@ -67,7 +67,7 @@ class logparser_ftkimager(object):
                     elif section=='Image Verification Results':
                         while True:
                             if line.strip()=='':    break
-                            res = line.split(': ')
+                            res=line.split(': ')
                             if len(res)==2:
                                 key=res[0].strip()
                                 value=res[1].strip()
@@ -103,7 +103,7 @@ class logparser_ftkimager(object):
 
         ret=dict()
         ret['case']=''
-        ret['data_name']=data['input_information']['Evidence Number']
+        ret['data_name']=data['basic_information']['Evidence Number']
         ret['collection_result_type']=data['collection_result_type']
         ret['hash']='{}:{}'.format('MD5', data['Image Verification Results']['MD5 checksum'].upper())
         ret['Source_Serialnumber']=data['Drive Serial Number']
@@ -114,8 +114,8 @@ class logparser_ftkimager(object):
         if data['Verification finished']:  ret['collection_complete_datetime']=datetime.datetime.strptime(data['Verification finished'], '%a %b %d %H:%M:%S %Y')
         else:   ret['collection_complete_datetime']=datetime.datetime.strptime(data['Image Information']['Acquisition finished'], '%a %b %d %H:%M:%S %Y')
 
-        ret['collection_tool']=data['collection_tool']
-        ret['collection_tool_version']=data['collection_tool_version']
+        ret['collection_tool']=data['basic_information']['collection_tool']
+        ret['collection_tool_version']=data['basic_information']['collection_tool_version']
         return ret
 
 
@@ -124,9 +124,10 @@ if __name__=='__main__':
     parser=ArgumentParser()
     parser.add_argument('-i', '--input', dest='input_path', help='Path to parsing')
     parser.add_argument('-s', '--standardization', action='store_true', help='Get the parsing data with standardization format')
-    args=parser.parse_args(['-i', r'\\192.168.0.250\storage\Work\HH_Backup\Backup_HH.E01.txt'])
+    args=parser.parse_args()
 
     log_path=args.input_path
     parser=logparser_ftkimager()
+
     if args.standardization:    print (parser.parse_ftklog_standardization(log_path))
     else:    print (parser.parse_ftklog(log_path))

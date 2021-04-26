@@ -94,6 +94,7 @@ if __name__=='__main__':
 
     log_path=args.input_path
     parser=logparser_HancomRED()
+    
     if args.standardization:    print (parser.parse_hancomredlog_standardization(log_path))
     else:    print (parser.parse_hancomredlog(log_path))
 
