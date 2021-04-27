@@ -14,7 +14,7 @@ class logparser(object):
         self.parser_hancomred=logparser_HancomRED.logparser_HancomRED()
         self.parser_ufd=logparser_UFD.logparser_udf()
 
-    def parsing(self, path):
+    def parsing(self, path :str):
         if self.parser_falcon.is_falconlog(path):
             return self.parser_falcon.parse_falconlog(path)
         elif self.parser_ftkimager.is_ftklog(path):
@@ -25,7 +25,7 @@ class logparser(object):
             return self.parser_ufd.parse_ufdlog(path)
         return False
 
-    def parsing_standardization(self, path):
+    def parsing_standardization(self, path :str):
         if self.parser_falcon.is_falconlog(path):
             return self.parser_falcon.parse_falconlog_standardization(path)
         elif self.parser_ftkimager.is_ftklog(path):

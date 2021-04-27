@@ -30,7 +30,7 @@ class logparser_udf(object):
                 data[section][key]=value
         return data
 
-    def parse_ufdlog_standardization(self, log_path):
+    def parse_ufdlog_standardization(self, log_path :str):
         data=self.parse_ufdlog(log_path)
 
         ret=dict()
@@ -38,7 +38,7 @@ class logparser_udf(object):
         ret['data_name']=''
         ret['collection_result_type']='{}:{}'.format(data['General']['extractiontype'], data['General']['device'])
         ret['hash']="{}:{}".format('HMAC', data['Hash']['hmac'])
-        ret['Source_Serialnumber']=''
+        ret['source_serialnumber']=''
         ret['timezone_time']=''
 
         ret['collection_start_datetime']=datetime.datetime.strptime(data['General']['date'], '%d-%m-%Y %H:%M:%S')

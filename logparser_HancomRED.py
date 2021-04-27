@@ -56,17 +56,18 @@ class logparser_HancomRED(object):
                             data[section]['경로']=''
                         data[section]['경로']=data[section]['경로']+line
         data['collection_tool']='HancomRED'
+
         return data
 
-    def parse_hancomredlog_standardization(self, log_path):
+    def parse_hancomredlog_standardization(self, log_path :str):
         data=self.parse_ftklog(log_path)
 
         ret=dict()
         ret['case']=''
-        ret['data_name']=data['Evidence Number']
+        ret['data_name']=data['획득 정보']['Evidence Number']
         ret['collection_result_type']=''
         ret['hash']="{}:{}".format("MD5", data['MD5 checksum'].upper())
-        ret['Source_Serialnumber']=data['Drive Serial Number']
+        ret['source_serialnumber']=data['Drive Serial Number']
         ret['timezone_time']=None
 
         ret['collection_start_datetime']=datetime.datetime.strptime('{date}'.format(date=data['Acquisition started']), '%a %b %d %H:%M:%S %Y')
@@ -76,13 +77,14 @@ class logparser_HancomRED(object):
 
         ret['collection_tool']=data['collection_tool']
         ret['collection_tool_version']=data['Software Version']
+
         return ret
 
 
 if __name__=='__main__':
     # Argument parsing
     parser=ArgumentParser()
-    parser.add_argument('-i', '--input', dest='input_path', help='Path to parsing')
+    parser.add_argument('input_path', help='Path to parsing')
     parser.add_argument('-s', '--standardization', action='store_true', help='Get the parsing data with standardization format')
     args=parser.parse_args()
 

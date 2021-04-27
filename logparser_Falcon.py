@@ -12,7 +12,8 @@ class logparser_falcon(object):
 
     def is_falconlog(self, log_path :str):
         # check the extension
-        if os.path.splitext(log_path)[1].lower()!='.pdf':  return False
+        if os.path.splitext(log_path)[1].lower()!='.pdf':
+            return False
         return True
 
     def parse_falconlog(self, log_path :str):
@@ -100,16 +101,16 @@ class logparser_falcon(object):
                     pass
         return data
 
-    def parse_falconlog_standardization(self, log_path):
+    def parse_falconlog_standardization(self, log_path :str):
         data=self.parse_falconlog(log_path)
 
         ret=dict()
         ret['case']=data['Case Information']['Case ID']
         ret['data_name']=data['Case Information']['Evidence ID']
-        if data['Method']=='E01Capture':
+        if data['Operation Parameters']['Method']=='E01Capture':
             ret['collection_result_type']='E01'
         ret['hash']="{}:{}".format(data['Hash Information']['Hash Type'], data['Hash Information']['Source Hash'].upper())
-        ret['Source_Serialnumber']=''
+        ret['source_serialnumber']=''
         ret['timezone_time']=data['basic_information']['Time (Local)'].split(' ')[2][:-1]
 
         start_date=datetime.datetime.strptime('{date}'.format(date=data['basic_information']['Date']), '%b %d, %Y')
@@ -129,7 +130,7 @@ class logparser_falcon(object):
 if __name__=='__main__':
     # Argument parsing
     parser=ArgumentParser()
-    parser.add_argument('-i', '--input', dest='input_path', help='Path to parsing')
+    parser.add_argument('input_path', help='Path to parsing')
     parser.add_argument('-s', '--standardization', action='store_true', help='Get the parsing data with standardization format')
     args=parser.parse_args()
 

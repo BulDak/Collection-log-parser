@@ -95,7 +95,7 @@ class logparser_ftkimager(object):
                     continue
         return data
 
-    def parse_ftklog_standardization(self, log_path):
+    def parse_ftklog_standardization(self, log_path :str):
         data=self.parse_ftklog(log_path)
 
         ret=dict()
@@ -103,7 +103,7 @@ class logparser_ftkimager(object):
         ret['data_name']=data['basic_information']['Evidence Number']
         ret['collection_result_type']=data['collection_result_type']
         ret['hash']='{}:{}'.format('MD5', data['Image Verification Results']['MD5 checksum'].upper())
-        ret['Source_Serialnumber']=data['Drive Serial Number']
+        ret['source_serialnumber']=data['Drive Serial Number']
         ret['timezone_time']=None
 
         ret['collection_start_datetime']=datetime.datetime.strptime('{date}'.format(date=data['Image Information']['Acquisition started']), '%a %b %d %H:%M:%S %Y')
@@ -113,13 +113,14 @@ class logparser_ftkimager(object):
 
         ret['collection_tool']=data['basic_information']['collection_tool']
         ret['collection_tool_version']=data['basic_information']['collection_tool_version']
+
         return ret
 
 
 if __name__=='__main__':
     # Argument parsing
     parser=ArgumentParser()
-    parser.add_argument('-i', '--input', dest='input_path', help='Path to parsing')
+    parser.add_argument('input_path', help='Path to parsing')
     parser.add_argument('-s', '--standardization', action='store_true', help='Get the parsing data with standardization format')
     args=parser.parse_args()
 
