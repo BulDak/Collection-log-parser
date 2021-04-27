@@ -6,9 +6,6 @@ from collections import defaultdict
 import pdfplumber
 
 class logparser_HancomRED(object):
-    def __init__(self):
-        self.path=None
-
     def is_hancomredlog(self, log_path :str):
         # Check the extension
         if os.path.splitext(log_path)[1].lower()!='.pdf':  return False
@@ -22,7 +19,7 @@ class logparser_HancomRED(object):
 
     def parse_hancomredlog(self, log_path :str):
         """
-        :param path str: Path the log file
+        :param log_path str: Path the log file
         :return dict: parsed data
         """
         section_names=['획득 정보', '획득 목록']
@@ -72,16 +69,13 @@ class logparser_HancomRED(object):
         ret['Source_Serialnumber']=data['Drive Serial Number']
         ret['timezone_time']=None
 
-        ret["collection_start_datetime"]=datetime.datetime.strptime("{date}".format(date=data['Acquisition started']), "%a %b %d %H:%M:%S %Y")
+        ret['collection_start_datetime']=datetime.datetime.strptime('{date}'.format(date=data['Acquisition started']), '%a %b %d %H:%M:%S %Y')
 
-        if data["Verification finished"]:  ret["collection_complete_datetime"]=datetime.datetime.strptime(data["Verification finished"], '%a %b %d %H:%M:%S %Y')
-        else:   ret["collection_complete_datetime"]=datetime.datetime.strptime(data["Acquisition finished"], '%a %b %d %H:%M:%S %Y')
+        if data['Verification finished']:  ret['collection_complete_datetime']=datetime.datetime.strptime(data['Verification finished'], '%a %b %d %H:%M:%S %Y')
+        else:   ret['collection_complete_datetime']=datetime.datetime.strptime(data['Acquisition finished'], '%a %b %d %H:%M:%S %Y')
 
         ret['collection_tool']=data['collection_tool']
         ret['collection_tool_version']=data['Software Version']
-
-        ret['collection_tool']=data['collection_tool']
-        ret['collection_tool_version']=data['collection_tool_version']
         return ret
 
 

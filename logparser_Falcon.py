@@ -8,7 +8,6 @@ import pdfplumber
 
 class logparser_falcon(object):
     def __init__(self):
-        self.path=None
         self.section_names=['Operation Parameters', 'Hash Information','Verify Information', 'Case Information', 'Segment Information', 'Drive Information', 'Drive Capacities', 'Drive ATA Security Information', 'Drive Encryption Information', 'Source Partition Information']
 
     def is_falconlog(self, log_path :str):
@@ -18,7 +17,7 @@ class logparser_falcon(object):
 
     def parse_falconlog(self, log_path :str):
         """
-        :param path str: Path the log file
+        :param log_path str: Path the log file
         :return dict: parsed data
         """
         def get_keyvalue(line):
@@ -115,11 +114,11 @@ class logparser_falcon(object):
 
         start_date=datetime.datetime.strptime('{date}'.format(date=data['basic_information']['Date']), '%b %d, %Y')
         start_time=datetime.datetime.strptime('{time}'.format(time=data['basic_information']['Time (Local)'].split(' ')[0]), '%H:%M:%S')
-        ret["collection_start_datetime"]=start_date+datetime.timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second, microseconds=start_time.microsecond)
+        ret['collection_start_datetime']=start_date+datetime.timedelta(hours=start_time.hour, minutes=start_time.minute, seconds=start_time.second, microseconds=start_time.microsecond)
 
         start_date=ret['collection_start_datetime']
         duration_time=start_time=datetime.datetime.strptime('{time}'.format(time=data['Operation Parameters']['Duration']), '%H:%M:%S')
-        ret["collection_complete_datetime"]=start_date+datetime.timedelta(hours=duration_time.hour, minutes=duration_time.minute, seconds=duration_time.second, microseconds=duration_time.microsecond)
+        ret['collection_complete_datetime']=start_date+datetime.timedelta(hours=duration_time.hour, minutes=duration_time.minute, seconds=duration_time.second, microseconds=duration_time.microsecond)
 
         ret['collection_tool']=data['basic_information']['Product']
         ret['collection_tool_version']=data['basic_information']['Software Version']

@@ -5,12 +5,14 @@ from re import A
 import logparser_Falcon
 import logparser_FTKimager
 import logparser_HancomRED
+import logparser_UFD
 
 class logparser(object):
     def __init__(self):
         self.parser_falcon=logparser_Falcon.logparser_falcon()
         self.parser_ftkimager=logparser_FTKimager.logparser_ftkimager()
         self.parser_hancomred=logparser_HancomRED.logparser_HancomRED()
+        self.parser_ufd=logparser_UFD.logparser_udf()
 
     def parsing(self, path):
         if self.parser_falcon.is_falconlog(path):
@@ -19,6 +21,8 @@ class logparser(object):
             return self.parser_ftkimager.parse_ftklog(path)
         elif self.parser_hancomred.is_hancomredlog(path):
             return self.parser_hancomred.parse_hancomredlog(path)
+        elif self.parser_ufd.is_ufdlog(path):
+            return self.parser_ufd.parse_ufdlog(path)
         return False
 
     def parsing_standardization(self, path):
@@ -28,15 +32,16 @@ class logparser(object):
             return self.parser_ftkimager.parse_ftklog_standardization(path)
         elif self.parser_hancomred.is_hancomredlog(path):
             return self.parser_hancomred.parse_hancomredlog_standardization(path)
+        elif self.parser_ufd.is_ufdlog(path):
+            return self.parser_ufd.parse_ufdlog_standardization(path)
         return False
 
 
 if __name__=='__main__':
     parser=ArgumentParser()
-    parser.add_argument('-i', '--input', dest='input_path', help='Path to parsing')
+    parser.add_argument('input_path', help='Path to parsing')
     parser.add_argument('-s', '--standardization', action='store_true', help='Get the parsing data with standardization format')
-    # args=parser.parse_args()
-    args=parser.parse_args(['-s', '-i', r'\\192.168.0.250\storage\Work\HH_Backup'])
+    args=parser.parse_args()
 
     log_path=args.input_path
     lp=logparser()

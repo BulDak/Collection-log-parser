@@ -5,9 +5,6 @@ from argparse import ArgumentParser
 from collections import defaultdict
 
 class logparser_ftkimager(object):
-    def __init__(self):
-        self.path=None
-
     def is_ftklog(self, log_path :str):
         # Check the extension
         if os.path.splitext(log_path)[1].lower()!='.txt':  return False
@@ -21,7 +18,7 @@ class logparser_ftkimager(object):
 
     def parse_ftklog(self, log_path :str):
         """
-        :param path str: Path the log file
+        :param log_path str: Path the log file
         :return dict: parsed data
         """
 
